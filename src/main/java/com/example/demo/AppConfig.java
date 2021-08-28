@@ -12,7 +12,7 @@ import com.example.demo.order.OrderServiceImpl;
 
 public class AppConfig {
 
-    private MemberRepository memberRepository() {
+    public MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
 
