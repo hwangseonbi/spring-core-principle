@@ -9,23 +9,23 @@ import org.springframework.context.annotation.Bean;
 class StatefulServiceTest {
 
     @Test
-    void statefulServiceSingleton() {
+    void statelessServiceSingleton() {
         ApplicationContext ac = new AnnotationConfigApplicationContext(TestConfig.class);
         StatefulService statefulService1 = ac.getBean(StatefulService.class);
         StatefulService statefulService2 = ac.getBean(StatefulService.class);
 
         //ThreadA라고 가정 : 사용자A가 10000원 주문
-        statefulService1.order("userA",10000);
+        int userAPrice = statefulService1.order("userA",10000);
 
         //ThreadB라고 가정 : 사용자B가 20000원 주문
-        statefulService2.order("userB",20000);
+        int userBPrice = statefulService2.order("userB",20000);
 
 
         //ThreadA : 사용자A가 주문 금액 조회
-        int price = statefulService1.getPrice();
-        System.out.println("price = " + price);
+        System.out.println("userAPrice = " + userAPrice);
 
-        Assertions.assertThat(statefulService1.getPrice()).isEqualTo(10000);
+        Assertions.assertThat(userAPrice).isEqualTo(10000);
+        Assertions.assertThat(userBPrice).isEqualTo(20000);
     }
 
     static class TestConfig {
